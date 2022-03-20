@@ -12,7 +12,6 @@ export const SendAnchorTransaction = ({ transaction }: SolanaTransactionProps) =
 
     async function mkTransaction(transaction: SolanaTransaction, wallet: AnchorWallet, connection: Connection) {
         let newTransaction = new SolanaTransaction()
-        const postAccount = transaction.instructions[0].keys[1].pubkey
         const instructions = transaction.instructions.map((instruction) => {
             instruction.programId = new PublicKey(instruction.programId)
             instruction.keys.forEach((key) => {
@@ -31,7 +30,6 @@ export const SendAnchorTransaction = ({ transaction }: SolanaTransactionProps) =
         const verified = await connection.confirmTransaction(txid, 'confirmed');
         if (verified) {
             notify({ type: 'success', message: 'Transaction successful!', txid: txid });
-            router.push(`http://localhost:3002/post/${postAccount}`)
         }
         else {
             console.log(verified)
